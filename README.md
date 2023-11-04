@@ -97,6 +97,14 @@ ps -e | grep "python" | sed 's|^ *||' | cut -d' ' -f1 | xargs kill
 
 ### Поиск кресла по картинке
 
+Кресло, участвующее в эксперименте:
+
+Большая картинка:
+<img src="https://raw.githubusercontent.com/Eternal-radiance-of-the-true-mind/groscan_hacaton/main/imgs/hostel.png" height="100%" width="100%">
+
+Фрагмент:
+<img src="https://raw.githubusercontent.com/Eternal-radiance-of-the-true-mind/groscan_hacaton/main/imgs/chair.png" height="100%" width="100%">
+
 ```python
 map_color = cv2.imread("hostel.png")
 map_grayscale = cv2.cvtColor(map_color, cv2.COLOR_BGR2GRAY)
@@ -172,3 +180,27 @@ rtsp_stream.release()
 
 cv2.destroyAllWindows()
 ```
+
+Итоговый результат из гостиницы.
+
+ * GRAYSCALE_MODE = False
+ * ROTATION_ANGLE = 90
+ * HOSTEL_STREAM = True
+
+Фрагмент:
+<img src="https://raw.githubusercontent.com/Eternal-radiance-of-the-true-mind/groscan_hacaton/main/imgs/chair-90.png" height="100%" width="100%">
+
+Результат: 
+<img src="https://raw.githubusercontent.com/Eternal-radiance-of-the-true-mind/groscan_hacaton/main/imgs/hostel_04112023.png" height="100%" width="100%">
+
+Итоговый результат из видео-потока с коптера.
+
+ * GRAYSCALE_MODE = False
+ * ROTATION_ANGLE = 0
+ * HOSTEL_STREAM = False
+
+Фрагмент:
+<img src="https://raw.githubusercontent.com/Eternal-radiance-of-the-true-mind/groscan_hacaton/main/imgs/0439.png" height="100%" width="100%">
+
+Результат: 
+<img src="https://raw.githubusercontent.com/Eternal-radiance-of-the-true-mind/groscan_hacaton/main/imgs/haccaton_04112023.png" height="100%" width="100%">
