@@ -100,10 +100,12 @@ ps -e | grep "python" | sed 's|^ *||' | cut -d' ' -f1 | xargs kill
 Кресло, участвующее в эксперименте:
 
 Большая картинка:
-<img src="https://raw.githubusercontent.com/Eternal-radiance-of-the-true-mind/groscan_hacaton/main/imgs/hostel.png" height="100%" width="100%">
+
+
+<img src="https://raw.githubusercontent.com/Galina-Basargina/groscan_hacaton/main/imgs/hostel.png">
 
 Фрагмент:
-<img src="https://raw.githubusercontent.com/Eternal-radiance-of-the-true-mind/groscan_hacaton/main/imgs/chair.png" height="100%" width="100%">
+<img src="https://raw.githubusercontent.com/Galina-Basargina/groscan_hacaton/main/imgs/chair.png">
 
 ```python
 map_color = cv2.imread("hostel.png")
@@ -188,10 +190,10 @@ cv2.destroyAllWindows()
  * HOSTEL_STREAM = True
 
 Фрагмент:
-<img src="https://raw.githubusercontent.com/Eternal-radiance-of-the-true-mind/groscan_hacaton/main/imgs/chair-90.png" height="100%" width="100%">
+<img src="https://raw.githubusercontent.com/Galina-Basargina/groscan_hacaton/main/imgs/chair-90.png">
 
 Результат: 
-<img src="https://raw.githubusercontent.com/Eternal-radiance-of-the-true-mind/groscan_hacaton/main/imgs/hostel_04112023.png" height="100%" width="100%">
+<img src="https://raw.githubusercontent.com/Galina-Basargina/groscan_hacaton/main/imgs/hostel_04112023.png" width="100%">
 
 Итоговый результат из видео-потока с коптера.
 
@@ -200,7 +202,7 @@ cv2.destroyAllWindows()
  * HOSTEL_STREAM = False
 
 Фрагмент:
-<img src="https://raw.githubusercontent.com/Eternal-radiance-of-the-true-mind/groscan_hacaton/main/imgs/0439.png" height="100%" width="100%">
+<img src="https://raw.githubusercontent.com/Galina-Basargina/groscan_hacaton/main/imgs/0439.png">
 
 Результат: 
-<img src="https://raw.githubusercontent.com/Eternal-radiance-of-the-true-mind/groscan_hacaton/main/imgs/haccaton_04112023.png" height="100%" width="100%">
+<img src="https://raw.githubusercontent.com/Galina-Basargina/groscan_hacaton/main/imgs/haccaton_04112023.png" width="100%">
