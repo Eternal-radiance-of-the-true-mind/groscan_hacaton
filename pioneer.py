@@ -1,23 +1,23 @@
 import cv2
 
-GRAYSCALE_MODE = True
+GRAYSCALE_MODE = False
 ROTATION_ANGLE = 0
-HOSTEL_STREAM = False
+HOSTEL_STREAM = True
 
 cv2.namedWindow("Pioneer View", cv2.WINDOW_NORMAL)
 cv2.namedWindow("Point1", cv2.WINDOW_NORMAL)
 
 if HOSTEL_STREAM:
     rtsp_stream = cv2.VideoCapture("http://158.58.130.148/mjpg/video.mjpg")
-    point1_original = cv2.imread("chair-90.png", cv2.IMREAD_GRAYSCALE if GRAYSCALE_MODE else cv2.IMREAD_COLOR)  # 0439.png
+    point1_original = cv2.imread("imgs/chair-90.png", cv2.IMREAD_GRAYSCALE if GRAYSCALE_MODE else cv2.IMREAD_COLOR)  # 0439.png
 else:
     rtsp_stream = cv2.VideoCapture("rtsp://127.0.0.1:8554/stream6")
-    point1_original = cv2.imread("0439.png", cv2.IMREAD_GRAYSCALE if GRAYSCALE_MODE else cv2.IMREAD_COLOR)  # 0439.png
+    point1_original = cv2.imread("imgs/0439.png", cv2.IMREAD_GRAYSCALE if GRAYSCALE_MODE else cv2.IMREAD_COLOR)  # 0439.png
 point1_original_w, point1_original_h = (point1_original.shape[0], point1_original.shape[1])
 
 if ROTATION_ANGLE != 0:
     center1_x, center1_y = (point1_original_w // 2, point1_original_h // 2)
-    print(point1_original.shape, center1_x, center1_y)
+    #print(point1_original.shape, center1_x, center1_y)
     M = cv2.getRotationMatrix2D((center1_x, center1_y), ROTATION_ANGLE, 1.0)
     point1 = cv2.warpAffine(point1_original, M, (point1_original_w, point1_original_h))
     point1_w, point1_h = (point1.shape[0], point1.shape[1])
