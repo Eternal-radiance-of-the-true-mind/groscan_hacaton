@@ -271,3 +271,83 @@ cv2.destroyAllWindows()
 
 Результат (каким-то образом мужчина не помешал обнаружению кресла): 
 <img src="https://raw.githubusercontent.com/Galina-Basargina/groscan_hacaton/main/imgs/hostel_05112023-15.png" width="100%">
+
+В процессе исследований выяснилось несколько особенностей, о которых надо помнить:
+
+ * в shape хранится сначала height, а потом width (на вход функций обычно подаётся в другом порядке)
+ * ровно повернуть прямоугольник не получилось, т.к. при повороте от исходного центра картинка уезжает за край dst-изображения
+ * mask в matchTemplate не работает в сложных методах (поддерживается DIFF, который нам не годится)
+ * поэтому все искомые объекты решено сохранять в виде квадратов, иначе их автоматичекий поворот затруднён (а вырезать `4*5*3=60` изображений грустно)
+ * искомый квадрат не должен оказываться за пределами видимого дроном изображения, т.е. в кадре должен находится квадрат/объект полностью
+ * метод поиска ничего не знает об исходном изображении, поэтому в общем случае искомый объект пусть и неправдоподобный, но будет найден
+
+Чтобы оценить правдоподобность найденного объекта, можно посмотреть на результат функции `minMaxLoc`, например все повёрнутые на 90° варианты искомых фрагментов выдают такую правдоподобность:
+
+```text
+0 -0.38854897022247314 0.9999997615814209 (239, 230) (23, 32)
+1 -0.3032950460910797 0.31734275817871094 (156, 192) (369, 0)
+2 -0.3785737454891205 0.39756810665130615 (100, 74) (319, 187)
+3 -0.28990480303764343 0.3153490126132965 (254, 4) (92, 181)
+```
+
+<img src="https://raw.githubusercontent.com/Galina-Basargina/groscan_hacaton/main/imgs/bear_05112023-18.png" width="100%">
+
+Вариант поиска с поворотами такой:
+
+```python
+import cv2
+import numpy as np
+
+cv2.namedWindow("Pioneer View", cv2.WINDOW_NORMAL)
+cv2.namedWindow("Point1 0°", cv2.WINDOW_NORMAL)
+cv2.namedWindow("Point1 90°", cv2.WINDOW_NORMAL)
+cv2.namedWindow("Point1 180°", cv2.WINDOW_NORMAL)
+cv2.namedWindow("Point1 270°", cv2.WINDOW_NORMAL)
+
+map = cv2.imread("imgs/bear.png")
+point1_original = cv2.imread("imgs/bear-small.png")
+# point1_mask = cv2.imread("imgs/bear-small-mask.png")
+# проверяем, что размеры картинок совпадают, и они являются квадратами, иначе методы поворота не работают
+# (поворот выполняется за пределы картинки, если центр вращения - центр прямоугольника)
+assert point1_original.shape[1] == point1_original.shape[0]
+# assert point1_mask.shape[1] == point1_mask.shape[0]
+# assert point1_original.shape[0] == point1_mask.shape[0]
+# в shape при загрузке картинки идёт сначала ширина, а потом высота
+point1_original_w, point1_original_h = (point1_original.shape[1], point1_original.shape[0])
+point1_size = (point1_original_w, point1_original_h)
+center1_x, center1_y = (point1_original_w // 2, point1_original_h // 2)
+
+# поворот искомой картинки (4 раза по 90 градусов)
+point1_rotated = []
+for angle in range(0, 4):
+    # создаём матрицу поворота
+    M = cv2.getRotationMatrix2D((center1_x, center1_y), angle*90, 1.0)
+    # вычисляем размеры повёрнутой картинки (так и не удалось повернуть прямоугольник)
+    dsize = (point1_size[0], point1_size[1])
+    # поворачиваем картинку и маску
+    point1 = cv2.warpAffine(point1_original, M, dsize)
+    # mask1 = cv2.warpAffine(point1_mask, M, dsize)
+    # вычисляем размеры повёрнутой картинки (у квадратов они одинаковые)
+    point1_w, point1_h = (point1.shape[1], point1.shape[0])
+    assert point1_original_w == point1_w
+    # assert point1_w == mask1.shape[1]
+    print(angle*90, 'wh', point1_w, point1_h, 'dsize', dsize, 'shape', point1.shape, 'center', center1_x, center1_y)
+    point1_rotated.append((point1.copy(), point1_w, point1_h))  # , mask1.copy()
+    # del mask1
+    del point1
+    del M
+
+frame = map
+for angle, (point1, point1_w, point1_h) in enumerate(point1_rotated):  #, mask1
+    result = cv2.matchTemplate(frame, point1, cv2.TM_CCOEFF_NORMED)  #, mask1
+    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
+    if max_loc:
+        (x, y) = max_loc
+        cv2.rectangle(frame, (x, y), (x + point1_w, y + point1_h), (0, 0, 255), 5)
+    cv2.imshow("Point1 {}°".format(angle*90), result)
+    print(angle, min_val, max_val, min_loc, max_loc)
+cv2.imshow("Pioneer View", frame)
+cv2.waitKey()
+
+cv2.destroyAllWindows()
+```

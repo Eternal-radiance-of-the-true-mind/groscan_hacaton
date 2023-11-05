@@ -1,7 +1,7 @@
 import cv2
 
-GRAYSCALE_MODE = False
-HOSTEL_STREAM = True
+GRAYSCALE_MODE = True
+HOSTEL_STREAM = False
 
 cv2.namedWindow("Pioneer View", cv2.WINDOW_NORMAL)
 cv2.namedWindow("Point1 0°", cv2.WINDOW_NORMAL)
@@ -17,6 +17,7 @@ else:
     rtsp_stream = cv2.VideoCapture("rtsp://127.0.0.1:8554/stream6")
     point1_original = cv2.imread("imgs/0439.png", cv2.IMREAD_GRAYSCALE if GRAYSCALE_MODE else cv2.IMREAD_COLOR)  # 0439.png
 point1_original_w, point1_original_h = (point1_original.shape[0], point1_original.shape[1])
+point1_original = cv2.cvtColor(point1_original, cv2.COLOR_BGR2RGB)
 
 # поворот искомой картинки (4 раза по 90 градусов)
 point1_rotated = []
