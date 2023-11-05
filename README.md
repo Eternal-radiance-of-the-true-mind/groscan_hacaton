@@ -427,7 +427,7 @@ for angle in range(0, 4):
     point1_reduced = cv2.resize(point1, dsize)
     point1_rotated.append((angle*90, point1_reduced.copy(), dsize[0], dsize[1], 1.0-RESIZE_PERCENT))
     # увеличиваем
-    dsize = (int((1.1 + RESIZE_PERCENT) * point1_original_w), int((1.1 + RESIZE_PERCENT) * point1_original_h))
+    dsize = (int((1.0 + RESIZE_PERCENT) * point1_original_w), int((1.0 + RESIZE_PERCENT) * point1_original_h))
     point1_enlarged = cv2.resize(point1, dsize)
     point1_rotated.append((angle * 90, point1_enlarged.copy(), dsize[0], dsize[1], 1.0+RESIZE_PERCENT))
     # удаляем скопированные объекты
@@ -538,7 +538,7 @@ for (point_number, point_original) in points_original:
             point_reduced.copy(), dsize[0], dsize[1],
             1.0-RESIZE_PERCENT))
         # увеличиваем
-        dsize = (int((1.1 + RESIZE_PERCENT) * point_original_w), int((1.1 + RESIZE_PERCENT) * point_original_h))
+        dsize = (int((1.0 + RESIZE_PERCENT) * point_original_w), int((1.0 + RESIZE_PERCENT) * point_original_h))
         point_enlarged = cv2.resize(point, dsize)
         point_rotated.append((
             point_number,

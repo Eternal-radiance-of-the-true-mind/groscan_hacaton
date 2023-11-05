@@ -8,7 +8,7 @@ cv2.namedWindow("Pioneer View", cv2.WINDOW_NORMAL)
 cv2.namedWindow("Point1", cv2.WINDOW_NORMAL)
 cv2.namedWindow("Point2", cv2.WINDOW_NORMAL)
 
-map = cv2.imread("imgs/bear-enlarged.png")
+map = cv2.imread("imgs/bear-reduced.png")
 # настройки поиска элементов на карте
 point1_original = cv2.imread("imgs/bear-point1.png")
 point2_original = cv2.imread("imgs/bear-point2.png")
@@ -54,7 +54,7 @@ for (point_number, point_original) in points_original:
             point_reduced.copy(), dsize[0], dsize[1],
             1.0-RESIZE_PERCENT))
         # увеличиваем
-        dsize = (int((1.1 + RESIZE_PERCENT) * point_original_w), int((1.1 + RESIZE_PERCENT) * point_original_h))
+        dsize = (int((1.0 + RESIZE_PERCENT) * point_original_w), int((1.0 + RESIZE_PERCENT) * point_original_h))
         point_enlarged = cv2.resize(point, dsize)
         point_rotated.append((
             point_number,
