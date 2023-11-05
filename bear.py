@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 
+THRESHOLD = 0.80  # степень правдоподобности 80% и выше
+
 cv2.namedWindow("Pioneer View", cv2.WINDOW_NORMAL)
 cv2.namedWindow("Point1 0°", cv2.WINDOW_NORMAL)
 cv2.namedWindow("Point1 90°", cv2.WINDOW_NORMAL)
@@ -44,9 +46,11 @@ frame = map
 for angle, (point1, point1_w, point1_h) in enumerate(point1_rotated):  #, mask1
     result = cv2.matchTemplate(frame, point1, cv2.TM_CCOEFF_NORMED)  #, mask1
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
-    if max_loc:
-        (x, y) = max_loc
-        cv2.rectangle(frame, (x, y), (x + point1_w, y + point1_h), (0, 0, 255), 5)
+    if max_val >= THRESHOLD:
+        if max_loc:
+            (x, y) = max_loc
+            cv2.rectangle(frame, (x, y), (x + point1_w-1, y + point1_h-1), (0, 0, 255), 5)
+            cv2.rectangle(result, (x, y), (x + point1_w-1, y + point1_h-1), (255, 255, 255), 1)
     cv2.imshow("Point1 {}°".format(angle*90), result)
     print(angle, min_val, max_val, min_loc, max_loc)
 cv2.imshow("Pioneer View", frame)
