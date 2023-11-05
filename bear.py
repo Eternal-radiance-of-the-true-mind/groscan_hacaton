@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 THRESHOLD = 0.80  # степень правдоподобности 80% и выше
-RESIZE_PERCENT = 0.13
+RESIZE_PERCENT = 0.13  # размер уменьшения и увеличения фрагментов во время поиска
 
 cv2.namedWindow("Pioneer View", cv2.WINDOW_NORMAL)
 cv2.namedWindow("Point1", cv2.WINDOW_NORMAL)
